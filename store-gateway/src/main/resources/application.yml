@@ -1,0 +1,35 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: api-gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10001/eureka
+zuul:
+  prefix: /api  # 添加路由前缀
+  routes:
+    upload-service: /upload/**
+    search-service: /search/**
+    user-service: /user/**
+    auth-service: /auth/**
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+    sensitive-headers:     # 禁止使用的头信息，设置为null，否则set-cookie无效
+    add-host-header: true  # 携带请求本身的host头信息
+  hystrix:
+    command:
+      default:
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 60000 # 熔断超时时长：
+  ribbon:
+    ConnectTimeout: 60000 # ribbon链接超时时长
+    ReadTimeout: 60000    # ribbon读取超时时长
+    MaxAutoRetries: 0     # 当前服务重试次数
+    MaxAutoRetriesNextServer: 0 # 切换服务重试次数
+    eureka:
+      enabled: true
