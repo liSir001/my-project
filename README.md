@@ -1,2 +1,2 @@
-# my-project
-个人项目
+# intelligent-store
+智能存储平台
