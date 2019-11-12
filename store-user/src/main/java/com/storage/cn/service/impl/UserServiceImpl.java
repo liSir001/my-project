@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Auther: Lei Li
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) {
+    public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
         final String userName = userRequestDTO.getUserName();
         final String password = userRequestDTO.getPassword();
         final String phone = userRequestDTO.getPhone();
@@ -55,4 +56,37 @@ public class UserServiceImpl implements UserService {
         return userPage.map(UserPageQueryDTO::build);
     }
 
+    @Override
+    public UserResponseDTO queryUserByUserId(Long userId) {
+        Optional<User> optional = userRepository.findById(userId);
+        if (!optional.isPresent()) {
+            throw new RuntimeException(String.format("User not found, userId:%s", userId));
+        }
+        return UserResponseDTO.build(optional.get());
+    }
+
+    @Override
+    public void deleteUserByUserId(Long userId) {
+        Optional<User> optional = userRepository.findById(userId);
+        if (!optional.isPresent()) {
+            throw new RuntimeException(String.format("User not exist, userId:%s", userId));
+        }
+        userRepository.deleteById(userId);
+    }
+
+    @Override
+    public UserResponseDTO updateUser(UserRequestDTO userRequestDTO) {
+        final Long userId = userRequestDTO.getId();
+        Optional<User> optional = userRepository.findById(userId);
+        if (!optional.isPresent()) {
+            throw new RuntimeException(String.format("User not found, userId:%s", userId));
+        }
+        User oldUser = optional.get();
+        oldUser.setUserName(userRequestDTO.getUserName());
+        oldUser.setPassword(userRequestDTO.getPassword());
+        oldUser.setPhone(userRequestDTO.getPhone());
+        oldUser.setEmail(userRequestDTO.getEmail());
+        User newUser = userRepository.save(oldUser);
+        return UserResponseDTO.build(newUser);
+    }
 }

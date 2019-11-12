@@ -10,10 +10,10 @@ public interface UserService {
 
     /**
      * 创建用户
-     * @param userRequestDTO
+     * @param userRequestDTO 用户实体
      * @return
      */
-    UserResponseDTO registerUser(UserRequestDTO userRequestDTO);
+    UserResponseDTO createUser(UserRequestDTO userRequestDTO);
 
     /**
      * 分页查询用户列表
@@ -23,5 +23,23 @@ public interface UserService {
      */
     Page<UserPageQueryDTO> pageQueryUser(String userName, Pageable page);
 
+    /**
+     * 查询指定用户详情
+     * @param userId 用户id
+     * @return
+     */
+    UserResponseDTO queryUserByUserId(Long userId);
 
+    /**
+     * 删除指定用户
+     * @param userId 用户id
+     */
+    void deleteUserByUserId(Long userId);
+
+    /**
+     * 更新用户
+     * @param userRequestDTO 用户实体
+     * @return
+     */
+    UserResponseDTO updateUser(UserRequestDTO userRequestDTO);
 }
