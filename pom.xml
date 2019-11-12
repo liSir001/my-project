@@ -13,7 +13,6 @@
         <module>store-user</module>
         <module>store-search</module>
         <module>store-register</module>
-        <module>eureka-client</module>
         <module>store-gateway</module>
         <module>store-auth</module>
     </modules>
