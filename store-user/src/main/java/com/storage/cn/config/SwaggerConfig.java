@@ -35,7 +35,8 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("Intelligent-Store Swagger REST API")
                 .description("Intelligent-Store Swagger REST API")
-                .version("1.0").build();
+                .version("1.0")
+                .build();
     }
 
 }

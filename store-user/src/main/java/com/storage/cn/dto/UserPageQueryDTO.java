@@ -1,5 +1,6 @@
 package com.storage.cn.dto;
 
+import com.storage.cn.util.BeanCopyUtils;
 import lombok.Data;
 import com.storage.cn.entity.User;
 import lombok.EqualsAndHashCode;
@@ -26,7 +27,7 @@ public class UserPageQueryDTO extends BaseDTO {
 
     public static UserPageQueryDTO build(User user) {
         UserPageQueryDTO dto = new UserPageQueryDTO();
-        BeanUtils.copyProperties(user, dto);
+        BeanCopyUtils.copyProperties(user, dto);
         return dto;
     }
 }
