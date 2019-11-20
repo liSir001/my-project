@@ -42,4 +42,11 @@ public interface UserService {
      * @return
      */
     UserResponseDTO updateUser(UserRequestDTO userRequestDTO);
+
+    /**
+     * 校验用户
+     * @param userName 用户名
+     * @param password 密码
+     */
+    Boolean findUserByUserNameAndPassword(String userName, String password);
 }
