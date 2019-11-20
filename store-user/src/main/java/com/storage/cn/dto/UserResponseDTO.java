@@ -1,6 +1,7 @@
 package com.storage.cn.dto;
 
 import com.storage.cn.entity.User;
+import com.storage.cn.util.BeanCopyUtils;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -24,7 +25,7 @@ public class UserResponseDTO extends BaseDTO {
 
     public static UserResponseDTO build(User user) {
         UserResponseDTO dto = new UserResponseDTO();
-        BeanUtils.copyProperties(user, dto);
+        BeanCopyUtils.copyProperties(user, dto);
         return dto;
     }
 }

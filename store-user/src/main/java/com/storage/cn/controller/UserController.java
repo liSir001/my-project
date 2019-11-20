@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -121,7 +122,7 @@ public class UserController {
      */
     @ApiOperation(value = "更新用户", produces = APPLICATION_JSON_UTF8_VALUE)
     @ApiImplicitParam(name = "userRequestDTO", value = "用户实体", required = true, paramType = "body", dataType = "UserRequestDTO")
-    @PostMapping(produces = APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(produces = APPLICATION_JSON_UTF8_VALUE)
     public UserResponseDTO updateUser(@Validated({Update.class, Default.class}) @RequestBody UserRequestDTO userRequestDTO) {
         log.info("Update user started, request:{}", JSON.toJSONString(userRequestDTO));
         UserResponseDTO user = userService.updateUser(userRequestDTO);
@@ -142,7 +143,7 @@ public class UserController {
     })
     @GetMapping(path = "/verify", produces = APPLICATION_JSON_UTF8_VALUE)
     public Boolean verifyUser(@RequestParam("userName") String userName,
-                           @RequestParam("password") String password) {
+                              @RequestParam("password") String password) {
         log.info("Verify user started, userName:{}, password:{}", userName, password);
         Boolean success = userService.findUserByUserNameAndPassword(userName, password);
         log.info("Verify user finished");
