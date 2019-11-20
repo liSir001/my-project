@@ -6,6 +6,7 @@ import com.storage.cn.dto.UserPageQueryDTO;
 import com.storage.cn.dto.UserRequestDTO;
 import com.storage.cn.dto.UserResponseDTO;
 import com.storage.cn.entity.User;
+import com.storage.cn.enums.ErrorResultCode;
 import com.storage.cn.exception.StoreException;
 import com.storage.cn.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO queryUserByUserId(Long userId) {
         Optional<User> optional = userRepository.findById(userId);
         if (!optional.isPresent()) {
-            throw new StoreException(String.format("User not found, userId:%s", userId));
+            throw new StoreException(ErrorResultCode.USER_NOT_FOUND);
         }
         return UserResponseDTO.build(optional.get());
     }
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserByUserId(Long userId) {
         Optional<User> optional = userRepository.findById(userId);
         if (!optional.isPresent()) {
-            throw new StoreException(String.format("User not exist, userId:%s", userId));
+            throw new StoreException(ErrorResultCode.USER_NOT_FOUND);
         }
         userRepository.deleteById(userId);
     }
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
         final Long userId = userRequestDTO.getId();
         Optional<User> optional = userRepository.findById(userId);
         if (!optional.isPresent()) {
-            throw new StoreException(String.format("User not found, userId:%s", userId));
+            throw new StoreException(ErrorResultCode.USER_NOT_FOUND);
         }
         User oldUser = optional.get();
         oldUser.setUserName(userRequestDTO.getUserName());
@@ -93,6 +94,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean findUserByUserNameAndPassword(String userName, String password) {
-        return userRepository.findByUserNameAndPassword(userName, password);
+        boolean flag = userRepository.findByUserNameAndPassword(userName, password);
+        if (!flag) {
+            throw new StoreException(ErrorResultCode.USER_NOT_FOUND);
+        }
+        return true;
     }
 }
