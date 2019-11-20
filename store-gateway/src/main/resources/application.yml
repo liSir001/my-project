@@ -34,3 +34,20 @@ zuul:
     MaxAutoRetriesNextServer: 0 # 切换服务重试次数
     eureka:
       enabled: true
+store:
+  cors:
+    allowedOrigins:
+    - http://localhost:8080
+    allowCredentials: true
+    allowedMethods:
+    - GET
+    - POST
+    - DELETE
+    - PUT
+    - OPTIONS
+    - HEAD
+    - PATCH
+    maxAge: 3600
+    filterPath: /**
+    allowedHeaders:
+    - "*"
