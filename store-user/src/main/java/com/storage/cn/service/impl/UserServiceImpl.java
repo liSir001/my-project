@@ -6,6 +6,7 @@ import com.storage.cn.dto.UserPageQueryDTO;
 import com.storage.cn.dto.UserRequestDTO;
 import com.storage.cn.dto.UserResponseDTO;
 import com.storage.cn.entity.User;
+import com.storage.cn.exception.StoreException;
 import com.storage.cn.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserPageQueryDTO> pageQueryUser(String userName, Pageable page) {
-        Specification<User> specification = (Specification<User>) (root, query, cb) -> {
+        Specification<User> specification = (root, query, cb) -> {
             List<Predicate> predicates = Lists.newArrayList();
             if (StringUtils.isNotBlank(userName)) {
                 Predicate predicate = cb.equal(root.get("userName").as(String.class), userName);
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO queryUserByUserId(Long userId) {
         Optional<User> optional = userRepository.findById(userId);
         if (!optional.isPresent()) {
-            throw new RuntimeException(String.format("User not found, userId:%s", userId));
+            throw new StoreException(String.format("User not found, userId:%s", userId));
         }
         return UserResponseDTO.build(optional.get());
     }
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserByUserId(Long userId) {
         Optional<User> optional = userRepository.findById(userId);
         if (!optional.isPresent()) {
-            throw new RuntimeException(String.format("User not exist, userId:%s", userId));
+            throw new StoreException(String.format("User not exist, userId:%s", userId));
         }
         userRepository.deleteById(userId);
     }
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
         final Long userId = userRequestDTO.getId();
         Optional<User> optional = userRepository.findById(userId);
         if (!optional.isPresent()) {
-            throw new RuntimeException(String.format("User not found, userId:%s", userId));
+            throw new StoreException(String.format("User not found, userId:%s", userId));
         }
         User oldUser = optional.get();
         oldUser.setUserName(userRequestDTO.getUserName());
@@ -88,5 +89,10 @@ public class UserServiceImpl implements UserService {
         oldUser.setEmail(userRequestDTO.getEmail());
         User newUser = userRepository.save(oldUser);
         return UserResponseDTO.build(newUser);
+    }
+
+    @Override
+    public Boolean findUserByUserNameAndPassword(String userName, String password) {
+        return userRepository.findByUserNameAndPassword(userName, password);
     }
 }
