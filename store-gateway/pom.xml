@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.storage.general</groupId>
+    <groupId>com.storage.communal</groupId>
     <artifactId>store-gateway</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 

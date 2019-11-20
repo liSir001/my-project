@@ -15,6 +15,7 @@
         <module>store-register</module>
         <module>store-gateway</module>
         <module>store-auth</module>
+        <module>store-communal</module>
     </modules>
     <packaging>pom</packaging>
 
